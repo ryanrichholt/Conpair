@@ -1,29 +1,25 @@
-#!/usr/bin/env python
-
-#
-# 2015-09-02
-# Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
-# New York Genome Center
-#
-
-# New York Genome Center
-# SOFTWARE COPYRIGHT NOTICE AGREEMENT
-# This software and its documentation are copyright (2016) by the New York
-# Genome Center. All rights are reserved. This software is supplied without
-# any warranty or guaranteed support whatsoever. The New York Genome Center
-# cannot be responsible for its use, misuse, or functionality.
-# Version: 1.0
-# Author: Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
+"""
+2015-09-02
+Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
+New York Genome Center
 
 
+New York Genome Center
+SOFTWARE COPYRIGHT NOTICE AGREEMENT
+This software and its documentation are copyright (2016) by the New York
+Genome Center. All rights are reserved. This software is supplied without
+any warranty or guaranteed support whatsoever. The New York Genome Center
+cannot be responsible for its use, misuse, or functionality.
+Version: 1.0
+Author: Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
+"""
 import os
 import itertools
-from Genotypes import *
 from collections import OrderedDict
+from conpair.genotypes import *
 
 
 class Marker:
-    
     def __init__(self, chrom, pos, ref, alt, RAF):
         self.chrom = chrom
         self.pos = pos
@@ -44,11 +40,10 @@ def get_markers(marker_file):
         M = Marker(line[0], line[1], line[2], line[3], float(line[4]))
         Marker_Set[line[0] + ":" + line[1]] = M
     markers.close()
-    return(Marker_Set)
+    return Marker_Set
 
 
 class Pileup:
-    
     def __init__(self, chrom, pos, ref, qual_A, qual_C, qual_G, qual_T):
         self.chrom = chrom
         self.pos = pos
@@ -62,7 +57,6 @@ class Pileup:
 
 
 def parse_mpileup_line(line, min_map_quality=0, min_base_quality=0):
-    
     line = line.split()
     chrom = line[0]
     pos = line[1]
@@ -92,11 +86,10 @@ def parse_mpileup_line(line, min_map_quality=0, min_base_quality=0):
     T_base_quals_list = [baseQs[i] for i in indexes_T if int(baseQs[i]) >= min_base_quality]
     
     P = Pileup(chrom, pos, ref, A_base_quals_list, C_base_quals_list, G_base_quals_list, T_base_quals_list)
-    return(P)
+    return P 
 
 
 def genotype_likelihoods_for_markers(Markers, mpileup_file, min_map_quality=0, min_base_quality=0):
-    
     M = dict()
     f = open(mpileup_file)
     
@@ -130,10 +123,7 @@ def genotype_likelihoods_for_markers(Markers, mpileup_file, min_map_quality=0, m
             M[m] = None
     
     f.close()
-    return(M)
-    
-    
-
+    return M
 
 
 def pileup2acgt(pileup, ref):
@@ -161,7 +151,7 @@ def pileup2acgt(pileup, ref):
                 continue
         nts += r
         i += 1
-    return(nts)
+    return nts
 
 
 def baseQ2int(baseQ_string, scaling_factor=33):
@@ -169,14 +159,10 @@ def baseQ2int(baseQ_string, scaling_factor=33):
     for bq in baseQ_string:
         bq = ord(bq) - scaling_factor
         ints.append(bq)
-    return(ints)
+    return ints
 
 
 def find_all_positions_of_char(s, char):
     indexes = [i for i in range(0, len(s)) if s[i] == char]
-    return(indexes)
-
-
-
-
+    return indexes
 

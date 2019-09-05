@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-#
+"""
 # 2015-10-08
 # Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
 # New York Genome Center
@@ -14,13 +12,11 @@
 # cannot be responsible for its use, misuse, or functionality.
 # Version: 1.0
 # Author: Ewa A. Bergmann (ewa.a.bergmann@gmail.com)
-
-
+"""
 import sys
 import os
 from collections import defaultdict
 import numpy as np
-
 
 
 def RAF2genotypeProb(RAF):
@@ -28,8 +24,7 @@ def RAF2genotypeProb(RAF):
     p_refref = RAF*RAF
     p_refalt = 2*RAF*ALT
     p_altalt = ALT*ALT
-    return(p_refref, p_refalt, p_altalt)
-
+    return p_refref, p_refalt, p_altalt
 
 
 def compute_genotype_likelihood(ref_baseq, alt_baseq, normalize=True):
@@ -53,9 +48,10 @@ def compute_genotype_likelihood(ref_baseq, alt_baseq, normalize=True):
         BB = BB/S
     return(AA, AB, BB)
 
+
 def phred_to_p(phred):
-    return(np.float64(10**(-float(phred)/10)))
+    return np.float64(10**(-float(phred)/10))
 
 
 def prior_genotype_probability(RAF):
-    return(RAF**2, 2*RAF*(1-RAF), (1-RAF)**2)
+    return RAF**2, 2*RAF*(1-RAF), (1-RAF)**2
